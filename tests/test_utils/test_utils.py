@@ -1,4 +1,5 @@
 import os
+import platform
 import tempfile
 import unittest.mock
 
@@ -86,6 +87,10 @@ class OpenMLTaskTest(TestBase):
         # might not be on test server after reset, please rerun test at least once if fails
         self.assertEqual(len(evaluations), required_size)
 
+    @unittest.skipIf(
+        condition=platform.system() == "Windows",
+        reason="Permissions can't be set with the Python standard library on Windows (#1033).",
+    )
     @unittest.mock.patch("openml.config.get_cache_directory")
     def test__create_cache_directory(self, config_mock):
         with tempfile.TemporaryDirectory(dir=self.workdir) as td:

@@ -1,5 +1,6 @@
 # License: BSD 3-Clause
 
+import platform
 import tempfile
 import os
 import unittest.mock
@@ -9,6 +10,10 @@ import openml.testing
 
 
 class TestConfig(openml.testing.TestBase):
+    @unittest.skipIf(
+        condition=platform.system() == "Windows",
+        reason="Permissions can't be set with the Python standard library on Windows (#1033).",
+    )
     @unittest.mock.patch("os.path.expanduser")
     @unittest.mock.patch("openml.config.openml_logger.warning")
     @unittest.mock.patch("openml.config._create_log_handlers")
