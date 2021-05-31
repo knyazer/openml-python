@@ -34,7 +34,7 @@ class TestBase(unittest.TestCase):
         "study": [],
         "user": [],
     }  # type: dict
-    test_server = "https://test.openml.org/api/v1/xml"
+    test_server = "https://test.openml.org/api/v2/xml"
     # amueller's read/write key that he will throw away later
     apikey = "610344db6388d9ba34f6db45a3cf71de"
 
