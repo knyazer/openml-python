@@ -51,6 +51,7 @@ def _perform_api_call(call, request_method, data=None, file_elements=None):
         Return value of the OpenML server
     """
     url = config.server
+    print(url)
     if not url.endswith("/"):
         url += "/"
     url += call

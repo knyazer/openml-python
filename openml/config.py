@@ -149,7 +149,7 @@ class ConfigurationForExamples:
     _last_used_server = None
     _last_used_key = None
     _start_last_called = False
-    _test_server = "https://test.openml.org/api/v1/xml"
+    _test_server = "https://test.openml.org/api/v2/xml"
     _test_apikey = "c0c42819af31e706efe1f4b88c23c6c1"
 
     @classmethod
