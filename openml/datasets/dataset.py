@@ -301,9 +301,12 @@ class OpenMLDataset(OpenMLBase):
         # import required here to avoid circular import.
         from .functions import _get_dataset_arff, _get_dataset_parquet
 
-        self.data_file = _get_dataset_arff(self)
         if self._minio_url is not None:
             self.parquet_file = _get_dataset_parquet(self)
+            self.data_file = self.parquet_file
+        else:
+            self.arff_file = _get_dataset_arff(self)
+            self.data_file = self.arff_file
 
     def _get_arff(self, format: str) -> Dict:
         """Read ARFF file and return decoded arff.

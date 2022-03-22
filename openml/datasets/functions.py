@@ -426,11 +426,14 @@ def get_dataset(
             else:
                 raise
 
-        arff_file = _get_dataset_arff(description) if download_data else None
-        if "oml:minio_url" in description and download_data:
-            parquet_file = _get_dataset_parquet(description)
-        else:
-            parquet_file = None
+        arff_file = None
+        parquet_file = None
+        if download_data:
+            if "oml:minio_url" in description:
+                parquet_file = _get_dataset_parquet(description)
+            if not parquet_file:  # url does not exist or is invalid:
+                arff_file = _get_dataset_arff(description)
+
         remove_dataset_cache = False
     except OpenMLServerException as e:
         # if there was an exception,
@@ -1178,7 +1181,7 @@ def _create_dataset_from_description(
         paper_url=description.get("oml:paper_url"),
         update_comment=description.get("oml:update_comment"),
         md5_checksum=description.get("oml:md5_checksum"),
-        data_file=arff_file,
+        data_file=arff_file or parquet_file,
         cache_format=cache_format,
         features_file=features_file,
         qualities_file=qualities_file,
