@@ -48,7 +48,7 @@ RUNS_CACHE_DIR_NAME = "runs"
 def run_model_on_task(
     model: Any,
     task: Union[int, str, OpenMLTask],
-    avoid_duplicate_runs: bool = True,
+    avoid_duplicate_runs: bool = False,
     flow_tags: List[str] = None,
     seed: int = None,
     add_local_measures: bool = True,
@@ -68,9 +68,9 @@ def run_model_on_task(
     task : OpenMLTask or int or str
         Task to perform or Task id.
         This may be a model instead if the first argument is an OpenMLTask.
-    avoid_duplicate_runs : bool, optional (default=True)
+    avoid_duplicate_runs : bool, optional (default=False)
         If True, the run will throw an error if the setup/task combination is already present on
-        the server. This feature requires an internet connection.
+        the server. This feature requires an internet connection and a configured API key.
     flow_tags : List[str], optional (default=None)
         A list of tags that the flow should have at creation.
     seed: int, optional (default=None)
@@ -147,7 +147,7 @@ def run_model_on_task(
 def run_flow_on_task(
     flow: OpenMLFlow,
     task: OpenMLTask,
-    avoid_duplicate_runs: bool = True,
+    avoid_duplicate_runs: bool = False,
     flow_tags: List[str] = None,
     seed: int = None,
     add_local_measures: bool = True,
@@ -170,12 +170,9 @@ def run_flow_on_task(
         (https://scikit-learn.org/stable/tutorial/statistical_inference/supervised_learning.html)
     task : OpenMLTask
         Task to perform. This may be an OpenMLFlow instead if the first argument is an OpenMLTask.
-    avoid_duplicate_runs : bool, optional (default=True)
+    avoid_duplicate_runs : bool, optional (default=False)
         If True, the run will throw an error if the setup/task combination is already present on
-        the server. This feature requires an internet connection.
-    avoid_duplicate_runs : bool, optional (default=True)
-        If True, the run will throw an error if the setup/task combination is already present on
-        the server. This feature requires an internet connection.
+        the server. This feature requires an internet connection and a configured API key.
     flow_tags : List[str], optional (default=None)
         A list of tags that the flow should have at creation.
     seed: int, optional (default=None)
