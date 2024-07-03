@@ -2,6 +2,7 @@
 # ruff: noqa: PLR0913
 from __future__ import annotations
 
+import contextlib
 import logging
 import warnings
 from collections import OrderedDict
@@ -583,25 +584,24 @@ def get_dataset(  # noqa: C901, PLR0912
         description = _get_dataset_description(did_cache_dir, dataset_id)
         features_file = None
         qualities_file = None
+        arff_file = None
+        parquet_file = None
 
         if download_features_meta_data:
             features_file = _get_dataset_features_file(did_cache_dir, dataset_id)
         if download_qualities:
             qualities_file = _get_dataset_qualities_file(did_cache_dir, dataset_id)
 
-        arff_file = _get_dataset_arff(description) if download_data else None
         if "oml:parquet_url" in description and download_data:
-            try:
+            with contextlib.suppress(urllib3.exceptions.MaxRetryError):
                 parquet_file = _get_dataset_parquet(
                     description,
                     download_all_files=download_all_files,
                 )
-            except urllib3.exceptions.MaxRetryError:
-                parquet_file = None
-            if parquet_file is None and arff_file:
+
+            if parquet_file is None:
                 logger.warning("Failed to download parquet, fallback on ARFF.")
-        else:
-            parquet_file = None
+                arff_file = _get_dataset_arff(description)
         remove_dataset_cache = False
     except OpenMLServerException as e:
         # if there was an exception
